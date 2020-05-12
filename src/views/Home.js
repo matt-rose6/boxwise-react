@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+async function fetchData() {
+  const result = await axios.get("http://localhost:5000/api/public");
+  return result;
+}
 
 function Home() {
-  const [data, setData] = useState({})
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    async function fetchData(){
-    const result = await axios(
-      'http://localhost:5000/api/public',
-    );
-    setData(result.data);
-  }
-  fetchData();
+    fetchData().then((res) => {
+      setData(res.data);
+    });
   }, []);
 
   return (
@@ -19,7 +20,7 @@ function Home() {
       <h2>Welcome to boxwise, please log in</h2>
       <p>{data.message}</p>
     </div>
-  )
+  );
 }
 
-export default Home;
+export { Home, fetchData };
